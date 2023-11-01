@@ -259,8 +259,8 @@ public class PersistentStickyKeyDispatcherMultipleConsumers extends PersistentDi
                 availablePermits = Math.min(availablePermits, remainUnAckedMessages);
             }
             int maxMessagesForC = Math.min(entriesWithSameKeyCount, availablePermits);
-            Pair<Integer, List<Entry>> messagesWithEntries = subscription.isPendingAckMessageKeysRemembered() ?
-                    getRestrictedEntriesForConsumerPendingAck(consumer, entriesWithSameKey, maxMessagesForC,
+            Pair<Integer, List<Entry>> messagesWithEntries = subscription.isPendingAckMessageKeysRemembered()
+                    ? getRestrictedEntriesForConsumerPendingAck(consumer, entriesWithSameKey, maxMessagesForC,
                             readType, consumerStickyKeyHashesMap.get(consumer)) :
                     getRestrictedMaxEntriesForConsumer(consumer, entriesWithSameKey, maxMessagesForC,
                     readType, consumerStickyKeyHashesMap.get(consumer));
