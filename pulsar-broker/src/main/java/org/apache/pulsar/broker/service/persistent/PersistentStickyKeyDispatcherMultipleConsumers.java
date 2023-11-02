@@ -274,7 +274,7 @@ public class PersistentStickyKeyDispatcherMultipleConsumers extends PersistentDi
             if (messagesForC < toDispatch.size()) {
                 // We are not able to push all the messages with given key to its consumer,
                 // so we discard for now and mark them for later redelivery
-                for (int i = messagesForC; i < entriesWithSameKeyCount; i++) {
+                for (int i = messagesForC; i < toDispatch.size(); i++) {
                     Entry entry = toDispatch.get(i);
                     long stickyKeyHash = getStickyKeyHash(entry);
                     addMessageToReplay(entry.getLedgerId(), entry.getEntryId(), stickyKeyHash);
@@ -348,13 +348,13 @@ public class PersistentStickyKeyDispatcherMultipleConsumers extends PersistentDi
             Set<Integer> stickyKeyHashes
     ) {
         if (maxMessages == 0) {
-            return Pair.of(0, List.of());
+            return Pair.of(0, entries);
         }
         if (readType == ReadType.Normal && stickyKeyHashes != null
                 && redeliveryMessages.containsStickyKeyHashes(stickyKeyHashes)) {
             // If redeliveryMessages contains messages that correspond to the same hash as the messages
             // that the dispatcher is trying to send, do not send those messages for order guarantee
-            return Pair.of(0, List.of());
+            return Pair.of(0, entries);
         }
         if (recentlyJoinedConsumers == null) {
             return Pair.of(maxMessages, entries);
@@ -409,16 +409,16 @@ public class PersistentStickyKeyDispatcherMultipleConsumers extends PersistentDi
             Set<Integer> stickyKeyHashes
     ) {
         if (maxMessages == 0) {
-            return Pair.of(0, List.of());
+            return Pair.of(0, entries);
         }
         if (readType == ReadType.Normal && stickyKeyHashes != null
                 && redeliveryMessages.containsStickyKeyHashes(stickyKeyHashes)) {
             // If redeliveryMessages contains messages that correspond to the same hash as the messages
             // that the dispatcher is trying to send, do not send those messages for order guarantee
-            return Pair.of(0, List.of());
+            return Pair.of(0, entries);
         }
         if (recentlyJoinedConsumers == null) {
-            return Pair.of(maxMessages, List.of());
+            return Pair.of(maxMessages, entries);
         }
         removeConsumersFromRecentJoinedConsumers();
         PositionImpl maxReadPosition = recentlyJoinedConsumers.get(consumer);
@@ -426,7 +426,7 @@ public class PersistentStickyKeyDispatcherMultipleConsumers extends PersistentDi
         // is now ready to receive any message
         if (maxReadPosition == null) {
             // The consumer has not recently joined, so we can send all messages
-            return Pair.of(maxMessages, List.of());
+            return Pair.of(maxMessages, entries);
         }
 
         List<Entry> filtered = new ArrayList<>(entries.size());
