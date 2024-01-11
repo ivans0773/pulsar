@@ -401,6 +401,11 @@ public class ManagedCursorContainerTest {
         public boolean isClosed() {
             return false;
         }
+
+        @Override
+        public boolean isMessageDeleted(Position position) {
+            return false;
+        }
     }
 
     @Test

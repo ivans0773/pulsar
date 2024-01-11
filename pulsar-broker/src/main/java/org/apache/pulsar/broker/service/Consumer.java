@@ -1063,4 +1063,8 @@ public class Consumer {
     }
 
     private static final Logger log = LoggerFactory.getLogger(Consumer.class);
+
+    public boolean isPendingAck(long ledgerId, long entryId) {
+        return pendingAcks.containsKey(ledgerId, entryId);
+    }
 }

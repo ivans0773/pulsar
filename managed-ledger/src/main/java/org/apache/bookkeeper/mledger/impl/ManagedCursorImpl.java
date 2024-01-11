@@ -3160,6 +3160,7 @@ public class ManagedCursorImpl implements ManagedCursor {
         return individualDeletedMessages;
     }
 
+    @Override
     public boolean isMessageDeleted(Position position) {
         checkArgument(position instanceof PositionImpl);
         return individualDeletedMessages.contains(((PositionImpl) position).getLedgerId(),
