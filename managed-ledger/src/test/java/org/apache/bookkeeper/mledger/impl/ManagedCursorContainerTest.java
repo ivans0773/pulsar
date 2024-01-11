@@ -386,6 +386,11 @@ public class ManagedCursorContainerTest {
         public boolean checkAndUpdateReadPositionChanged() {
             return false;
         }
+
+        @Override
+        public boolean isMessageDeleted(Position position) {
+            return false;
+        }
     }
 
     @Test

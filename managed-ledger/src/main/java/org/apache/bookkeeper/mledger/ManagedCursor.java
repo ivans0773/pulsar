@@ -714,4 +714,11 @@ public interface ManagedCursor {
      * @return if read position changed
      */
     boolean checkAndUpdateReadPositionChanged();
+
+    /**
+     * Checks if position is already deleted.
+     * @param position
+     * @return whether position is deleted.
+     */
+    boolean isMessageDeleted(Position position);
 }
